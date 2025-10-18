@@ -1,13 +1,35 @@
+/**
+ * Input Component
+ * 
+ * A reusable input field component with label, error handling, and icon support.
+ * Provides consistent styling and accessibility features across the application.
+ */
 import React from 'react';
 
+/**
+ * Input Props Interface
+ * 
+ * Extends standard HTML input attributes with custom styling and functionality.
+ */
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  /** Label text to display above the input */
   label?: string;
+  /** Error message to display below the input */
   error?: string;
+  /** Whether input should take full width of container */
   fullWidth?: boolean;
+  /** Icon to display on the left side of input */
   leftIcon?: React.ReactNode;
+  /** Icon to display on the right side of input */
   rightIcon?: React.ReactNode;
 }
 
+/**
+ * Input Component Implementation
+ * 
+ * Renders a styled input field with optional label, icons, and error states.
+ * Automatically handles accessibility attributes and focus states.
+ */
 const Input: React.FC<InputProps> = ({
   label,
   error,
@@ -18,10 +40,12 @@ const Input: React.FC<InputProps> = ({
   id,
   ...props
 }) => {
+  // Generate input ID from label if not provided
   const inputId = id || label?.toLowerCase().replace(/\s+/g, '-');
   
   return (
     <div className={`${fullWidth ? 'w-full' : ''} ${className}`}>
+      {/* Label - only rendered if provided */}
       {label && (
         <label
           htmlFor={inputId}
@@ -31,13 +55,16 @@ const Input: React.FC<InputProps> = ({
         </label>
       )}
       
+      {/* Input container with icon support */}
       <div className="relative">
+        {/* Left icon container */}
         {leftIcon && (
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-500">
             {leftIcon}
           </div>
         )}
         
+        {/* Main input element */}
         <input
           id={inputId}
           className={`
@@ -51,6 +78,7 @@ const Input: React.FC<InputProps> = ({
           {...props}
         />
         
+        {/* Right icon container */}
         {rightIcon && (
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none text-gray-500">
             {rightIcon}
@@ -58,6 +86,7 @@ const Input: React.FC<InputProps> = ({
         )}
       </div>
       
+      {/* Error message - only shown when error exists */}
       {error && (
         <p className="mt-1 text-sm text-red-600">{error}</p>
       )}
